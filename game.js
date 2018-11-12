@@ -13,6 +13,7 @@ class Vector {
     return new Vector(plusVector.x + this.x, plusVector.y + this.y);
   }
 
+  // достаточно просто multiplier
   times(multiplierVector = 1) {
     return new Vector(this.x * multiplierVector, this.y * multiplierVector);
   }
@@ -52,18 +53,26 @@ class Actor {
   isIntersect(item) {
     if (this === item) {
       return false
-    };
+    }; // линяя точка с запятой
+    // лучше сначала проверить аргументы, а потом писать основной код
     if (!(item instanceof Actor)) {
       throw new Error('Передан не объект типа Vector');
+    // лишняя проверка
     } else if (item === undefined) {
       throw new Error('Объект не может быть пустым')
     }
+    // тут можно обратить условие (внести отрицание в скобки)
+    // для этого нужно заменить
+    // || на &&
+    // и операторы сравния на противоположные
+    // >= на < и <= на >
     return !((item.left >= this.right) || (item.right <= this.left) || (item.top >= this.bottom) || (item.bottom <= this.top));
   }
 }
 
 class Level {
   constructor(grid = [], actors = []) {
+    // зачем туту slice?
     this.actors = actors.slice();
     this.status = null;
     this.finishDelay = 1;
@@ -112,6 +121,7 @@ class Level {
   }
 
   removeActor(actor) {
+    // actorIndex более удачное название переменной тут
     const findInd = this.actors.indexOf(actor);
     if (findInd !== -1) {
       this.actors.splice(findInd, 1)
@@ -140,10 +150,13 @@ class Level {
 
 class LevelParser {
   constructor(dictionary) {
+    // можно написать вот так:
+    // this.dictionary = { ...dictionary };
     this.dictionary = Object.assign({}, dictionary);
   }
 
   actorFromSymbol(symbol) {
+    // все проверки лишние, если их убрать ничего не изменится
     if (symbol != undefined && Object.keys(this.dictionary).indexOf(symbol) != -1) {
       return this.dictionary[symbol];
     }
